@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
+import 'package:go_router/go_router.dart';
 import 'package:todo_app/2_application/pages/dashboard/dashboard_page.dart';
 import 'package:todo_app/2_application/pages/overview/overview_page.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final int index;
+  HomePage({super.key, required String tab})
+      : index = tabs.indexWhere((element) => element.name == tab);
 
   /// make a list for the tabs or the view
   static const tabs = [
@@ -37,6 +40,9 @@ class _HomePageState extends State<HomePage> {
             Breakpoints.mediumAndUp: SlotLayout.from(
               key: const Key('primary-navigation-medium'),
               builder: (context) => AdaptiveScaffold.standardNavigationRail(
+                selectedIndex: widget.index,
+                onDestinationSelected: (index) =>
+                    _tapOnNavigationDestination(context, index),
                 destinations: destinations
                     .map((element) =>
                         AdaptiveScaffold.toRailDestination(element))
@@ -53,7 +59,10 @@ class _HomePageState extends State<HomePage> {
               key: const Key('bottom-navigation-small'),
               builder: (context) =>
                   AdaptiveScaffold.standardBottomNavigationBar(
+                currentIndex: widget.index,
                 destinations: destinations,
+                onDestinationSelected: (index) =>
+                    _tapOnNavigationDestination(context, index),
               ),
             ),
           }),
@@ -63,8 +72,9 @@ class _HomePageState extends State<HomePage> {
           /// Which mean, it will always be displayed
           body: SlotLayout(config: <Breakpoint, SlotLayoutConfig>{
             Breakpoints.smallAndUp: SlotLayout.from(
-                key: const Key('primary-body'),
-                builder: (context) => const Placeholder())
+              key: const Key('primary-body'),
+              builder: (_) => HomePage.tabs[widget.index].child,
+            )
           }),
 
           /// The second body is second body of the page
@@ -72,11 +82,16 @@ class _HomePageState extends State<HomePage> {
           /// Which mean, it will display only in medium to high layout
           secondaryBody: SlotLayout(config: <Breakpoint, SlotLayoutConfig>{
             Breakpoints.mediumAndUp: SlotLayout.from(
-                key: const Key('secondary-body'),
-                builder: (context) => const Placeholder())
+              key: const Key('secondary-body'),
+              builder: AdaptiveScaffold.emptyBuilder,
+            )
           }),
         ),
       ),
     );
   }
+
+  /// to show the url
+  void _tapOnNavigationDestination(BuildContext context, int index) =>
+      context.go('/home/${HomePage.tabs[index].name}');
 }
