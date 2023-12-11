@@ -9,7 +9,7 @@ class HomePage extends StatefulWidget {
   HomePage({super.key, required String tab})
       : index = tabs.indexWhere((element) => element.name == tab);
 
-  /// make a list for the tabs or the view
+  /// list of all tabs that should be displayed inside navigation bar
   static const tabs = [
     DashboardPage.pageConfig,
     OverviewPage.pageConfig,
@@ -30,6 +30,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       body: SafeArea(
         /// The Primary navigation is the left navigation on page
@@ -40,6 +41,16 @@ class _HomePageState extends State<HomePage> {
             Breakpoints.mediumAndUp: SlotLayout.from(
               key: const Key('primary-navigation-medium'),
               builder: (context) => AdaptiveScaffold.standardNavigationRail(
+                width: 85,
+                labelType: NavigationRailLabelType.all,
+                selectedLabelTextStyle:
+                    TextStyle(color: theme.colorScheme.onBackground),
+                unSelectedLabelTextStyle: TextStyle(
+                    color: theme.colorScheme.onBackground.withOpacity(0.5)),
+                selectedIconTheme:
+                    IconThemeData(color: theme.colorScheme.onBackground),
+                unselectedIconTheme: IconThemeData(
+                    color: theme.colorScheme.onBackground.withOpacity(0.5)),
                 selectedIndex: widget.index,
                 onDestinationSelected: (index) =>
                     _tapOnNavigationDestination(context, index),
