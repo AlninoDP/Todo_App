@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:todo_app/1_domain/entities/unique_id.dart';
 import 'package:todo_app/2_application/core/go_router_observer.dart';
 import 'package:todo_app/2_application/pages/dashboard/dashboard_page.dart';
+import 'package:todo_app/2_application/pages/detail/todo_detail_page.dart';
 import 'package:todo_app/2_application/pages/home/home_page.dart';
+import 'package:todo_app/2_application/pages/overview/overview_page.dart';
 import 'package:todo_app/2_application/pages/settings/settings_page.dart';
 
 final GlobalKey<NavigatorState> _rootNavigationKey =
@@ -19,14 +22,14 @@ final routes = GoRouter(
   observers: [GoRouterObserver()],
   routes: [
     GoRoute(
-        name: SettingsPage.pageConfig.name,
-        path: '$_basePath/${SettingsPage.pageConfig.name}',
-        builder: (context, state) => const SettingsPage()),
+      name: SettingsPage.pageConfig.name,
+      path: '$_basePath/${SettingsPage.pageConfig.name}',
+      builder: (context, state) => const SettingsPage(),
+    ),
 
     /// ShellRoute is used for:
     /// display routes in justa subsection of the screen
     /// alongside another widget that remain constant (like BtmNavBar that switches between routes)
-
     ShellRoute(
       navigatorKey: _shellNavigatorKey,
       builder: (context, state, child) => child,
@@ -42,5 +45,29 @@ final routes = GoRouter(
         )
       ],
     ),
+
+    GoRoute(
+      name: ToDoDetailPage.pageConfig.name,
+      path: '$_basePath/overview/:collectionId',
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Details'),
+            leading: BackButton(onPressed: () {
+              if (context.canPop()) {
+                context.pop();
+              } else {
+                context.goNamed(HomePage.pageConfig.name,
+                    pathParameters: {'tab': OverviewPage.pageConfig.name});
+              }
+            }),
+          ),
+          body: ToDoDetailPageProvider(
+            collectionId: CollectionId.fromUniqueString(
+                state.pathParameters['collectionId'] ?? ''),
+          ),
+        );
+      },
+    )
   ],
 );

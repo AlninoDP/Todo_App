@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:todo_app/1_domain/entities/unique_id.dart';
 
 class ToDoEntry {
