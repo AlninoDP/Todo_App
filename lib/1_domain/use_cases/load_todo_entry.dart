@@ -14,7 +14,10 @@ class LoadToDoEntry implements UseCase<ToDoEntry, ToDoEntryIdParam> {
       final loadedEntry = await toDoRepository.readToDoEntry(
           params.collectionId, params.entryId);
 
-      return loadedEntry.fold((left) => Left(left), (right) => Right(right));
+      return loadedEntry.fold(
+        (failure) => Left(failure),
+        (toDoEntry) => Right(toDoEntry),
+      );
     } on Exception catch (e) {
       return Left(
         ServerFailure(stackTrace: e.toString()),
