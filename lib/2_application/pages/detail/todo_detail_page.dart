@@ -18,8 +18,8 @@ class ToDoDetailPageProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => TodoDetailCubit(
+    return BlocProvider<ToDoDetailCubit>(
+      create: (context) => ToDoDetailCubit(
         collectionId: collectionId,
         loadToDoEntryIdsForCollection: LoadToDoEntryIdsForCollection(
           toDoRepository: RepositoryProvider.of<ToDoRepository>(context),
@@ -43,7 +43,7 @@ class ToDoDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TodoDetailCubit, ToDoDetailCubitState>(
+    return BlocBuilder<ToDoDetailCubit, ToDoDetailCubitState>(
       builder: (context, state) {
         if (state is ToDoDetailCubitLoadingState) {
           return const ToDoDetailLoading();

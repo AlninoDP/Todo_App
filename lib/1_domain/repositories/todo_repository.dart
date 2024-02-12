@@ -12,4 +12,9 @@ abstract class ToDoRepository {
 
   Future<Either<Failure, List<EntryId>>> readToDoEntryIds(
       CollectionId collectionId);
+
+  Future<Either<Failure, ToDoEntry>> updateToDoEntry({
+    required CollectionId collectionId,
+    required EntryId entryId,
+  });
 }

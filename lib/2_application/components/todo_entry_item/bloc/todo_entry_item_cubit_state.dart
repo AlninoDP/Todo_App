@@ -1,20 +1,20 @@
 part of 'todo_entry_item_cubit.dart';
 
-abstract class ToDoEntryItemState extends Equatable {
-  const ToDoEntryItemState();
+abstract class ToDoEntryItemCubitState extends Equatable {
+  const ToDoEntryItemCubitState();
 
   @override
   List<Object> get props => [];
 }
 
-class ToDoEntryItemLoadingState extends ToDoEntryItemState {}
+class ToDoEntryItemLoadingState extends ToDoEntryItemCubitState {}
 
-class ToDoEntryItemErrorState extends ToDoEntryItemState {}
+class ToDoEntryItemErrorState extends ToDoEntryItemCubitState {}
 
-class ToDoEntryItemLoadedState extends ToDoEntryItemState {
+class ToDoEntryItemLoadedState extends ToDoEntryItemCubitState {
   final ToDoEntry toDoEntry;
   const ToDoEntryItemLoadedState({required this.toDoEntry});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [toDoEntry];
 }

@@ -6,8 +6,8 @@ import 'package:todo_app/core/use_case.dart';
 
 part 'todo_detail_cubit_state.dart';
 
-class TodoDetailCubit extends Cubit<ToDoDetailCubitState> {
-  TodoDetailCubit(
+class ToDoDetailCubit extends Cubit<ToDoDetailCubitState> {
+  ToDoDetailCubit(
       {required this.collectionId, required this.loadToDoEntryIdsForCollection})
       : super(ToDoDetailCubitLoadingState());
 
