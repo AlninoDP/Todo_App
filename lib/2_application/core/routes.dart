@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:todo_app/1_domain/entities/unique_id.dart';
 import 'package:todo_app/2_application/core/go_router_observer.dart';
 import 'package:todo_app/2_application/pages/create_todo_collection/create_todo_collection_page.dart';
+import 'package:todo_app/2_application/pages/create_todo_entry/create_todo_entry_page.dart';
 import 'package:todo_app/2_application/pages/dashboard/dashboard_page.dart';
 import 'package:todo_app/2_application/pages/detail/todo_detail_page.dart';
 import 'package:todo_app/2_application/pages/home/bloc/navigation_todo_cubit.dart';
@@ -66,6 +67,28 @@ final routes = GoRouter(
         ),
         body: SafeArea(
           child: CreateToDoCollectionPage.pageConfig.child,
+        ),
+      ),
+    ),
+
+    GoRoute(
+      name: CreateToDoEntryPage.pageConfig.name,
+      path: '$_basePath/overview/${CreateToDoEntryPage.pageConfig.name}',
+      builder: (context, state) => Scaffold(
+        appBar: AppBar(
+          title: const Text('Add Entry'),
+          leading: BackButton(onPressed: () {
+            if (context.canPop()) {
+              context.pop();
+            } else {
+              context.goNamed(HomePage.pageConfig.name,
+                  pathParameters: {'tab': OverviewPage.pageConfig.name});
+            }
+          }),
+        ),
+        body: SafeArea(
+          child: CreateToDoEntryPageProvider(
+              collectionId: state.extra as CollectionId),
         ),
       ),
     ),
