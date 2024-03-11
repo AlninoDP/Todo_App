@@ -39,6 +39,7 @@ class ToDoRepositoryMock implements ToDoRepository {
     }
   }
 
+  /// used in LoadToDoEntry UseCase and ToDoEntryItem page (cubit loaded state)
   /// get the details of a specific to-do item
   /// takes the ID of a specific to-do item (entryId)
   /// looks through the list to find the item with that ID.
@@ -58,6 +59,7 @@ class ToDoRepositoryMock implements ToDoRepository {
     }
   }
 
+  /// used in LoadToDoEntryIdsForCollection UseCase and detail page (cubit loaded state)
   /// get a list of IDs for a group of tasks within a specific category.
   /// takes the ID of a specific category (collectionId) and figures out a range of task IDs within that category.
   /// returns a list of those task IDs
@@ -66,7 +68,10 @@ class ToDoRepositoryMock implements ToDoRepository {
       CollectionId collectionId) {
     try {
       final startIndex = int.parse(collectionId.value) * 10;
-      final endIndex = startIndex + 10;
+      int endIndex = startIndex + 10;
+      if (toDoEntries.length <= endIndex) {
+        endIndex = toDoEntries.length - 1;
+      }
       final entryIds = toDoEntries
           .sublist(startIndex, endIndex)
           .map((entry) => entry.id)
@@ -79,6 +84,8 @@ class ToDoRepositoryMock implements ToDoRepository {
     }
   }
 
+  /// used to update task in detail page, changing the value of isDone in ToDoEntry
+  /// used in UpdateToDoEntry UseCase
   @override
   Future<Either<Failure, ToDoEntry>> updateToDoEntry(
       {required CollectionId collectionId, required EntryId entryId}) {
@@ -91,11 +98,21 @@ class ToDoRepositoryMock implements ToDoRepository {
         const Duration(milliseconds: 100), () => Right(updatedEntry));
   }
 
+  /// used in CreateToDoCollection UseCase and Overview page(cubit loaded state)
+  /// used for creating ToDoCollection
   @override
   Future<Either<Failure, bool>> createToDoCollection(
       ToDoCollection collection) {
     toDoCollections.add(collection);
     return Future.delayed(
         const Duration(milliseconds: 100), () => const Right(true));
+  }
+
+  /// used in CreateToDoEntry UseCase and
+  @override
+  Future<Either<Failure, bool>> createToDoEntry(ToDoEntry entry) {
+    toDoEntries.add(entry);
+    return Future.delayed(
+        const Duration(microseconds: 300), () => const Right(true));
   }
 }
