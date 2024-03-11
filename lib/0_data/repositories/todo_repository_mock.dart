@@ -40,9 +40,7 @@ class ToDoRepositoryMock implements ToDoRepository {
   }
 
   /// used in LoadToDoEntry UseCase and ToDoEntryItem page (cubit loaded state)
-  /// get the details of a specific to-do item
-  /// takes the ID of a specific to-do item (entryId)
-  /// looks through the list to find the item with that ID.
+  /// used to provide the task(ToDoEntry) for each of collection id
   @override
   Future<Either<Failure, ToDoEntry>> readToDoEntry(
       CollectionId collectionId, EntryId entryId) {
@@ -60,9 +58,7 @@ class ToDoRepositoryMock implements ToDoRepository {
   }
 
   /// used in LoadToDoEntryIdsForCollection UseCase and detail page (cubit loaded state)
-  /// get a list of IDs for a group of tasks within a specific category.
-  /// takes the ID of a specific category (collectionId) and figures out a range of task IDs within that category.
-  /// returns a list of those task IDs
+  /// used to load detail of the task(ToDoEntry) of each collection id
   @override
   Future<Either<Failure, List<EntryId>>> readToDoEntryIds(
       CollectionId collectionId) {
