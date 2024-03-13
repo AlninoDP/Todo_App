@@ -7,7 +7,7 @@ class FormValue<T> with EquatableMixin {
   FormValue({required this.value, required this.validationStatus});
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [value, validationStatus];
 }
 
 enum ValidationStatus {
