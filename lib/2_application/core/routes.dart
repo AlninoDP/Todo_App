@@ -74,23 +74,28 @@ final routes = GoRouter(
     GoRoute(
       name: CreateToDoEntryPage.pageConfig.name,
       path: '$_basePath/overview/${CreateToDoEntryPage.pageConfig.name}',
-      builder: (context, state) => Scaffold(
-        appBar: AppBar(
-          title: const Text('Add Entry'),
-          leading: BackButton(onPressed: () {
-            if (context.canPop()) {
-              context.pop();
-            } else {
-              context.goNamed(HomePage.pageConfig.name,
-                  pathParameters: {'tab': OverviewPage.pageConfig.name});
-            }
-          }),
-        ),
-        body: SafeArea(
-          child: CreateToDoEntryPageProvider(
-              collectionId: state.extra as CollectionId),
-        ),
-      ),
+      builder: (context, state) {
+        final castedExtras = state.extra as CreateToDoEntryPageExtra;
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Add Entry'),
+            leading: BackButton(onPressed: () {
+              if (context.canPop()) {
+                context.pop();
+              } else {
+                context.goNamed(HomePage.pageConfig.name,
+                    pathParameters: {'tab': OverviewPage.pageConfig.name});
+              }
+            }),
+          ),
+          body: SafeArea(
+            child: CreateToDoEntryPageProvider(
+                toDoEntryItemAddedCallBack:
+                    castedExtras.toDoEntryItemAddedCallBack,
+                collectionId: castedExtras.collectionId),
+          ),
+        );
+      },
     ),
 
     GoRoute(
