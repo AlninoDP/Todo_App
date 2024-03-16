@@ -10,7 +10,8 @@ class CreateToDoEntry implements UseCase<bool, ToDoEntryParams> {
   @override
   Future<Either<Failure, bool>> call(params) async {
     try {
-      final result = await toDoRepository.createToDoEntry(params.entry);
+      final result = await toDoRepository.createToDoEntry(
+          params.collectionId, params.entry);
       return result.fold(
         (failure) => Left(failure),
         (right) => Right(right),

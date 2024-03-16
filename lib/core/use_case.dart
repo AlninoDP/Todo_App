@@ -59,10 +59,14 @@ class ToDoCollectionParams extends Params {
 /// parameter to provide ToDoEntry
 /// used in CreateToDoEntry usecase
 class ToDoEntryParams extends Params {
-  ToDoEntryParams({required this.entry}) : super();
+  ToDoEntryParams({
+    required this.entry,
+    required this.collectionId,
+  }) : super();
 
   final ToDoEntry entry;
+  final CollectionId collectionId;
 
   @override
-  List<Object?> get props => [entry];
+  List<Object?> get props => [entry, collectionId];
 }
