@@ -8,10 +8,27 @@ import 'package:todo_app/2_application/core/form_value.dart';
 import 'package:todo_app/2_application/core/page_config.dart';
 import 'package:todo_app/2_application/pages/create_todo_entry/bloc/create_todo_entry_page_cubit.dart';
 
+typedef ToDoEntryItemAddedCallBack = Function();
+
+class CreateToDoEntryPageExtra {
+  final CollectionId collectionId;
+  final ToDoEntryItemAddedCallBack toDoEntryItemAddedCallBack;
+
+  CreateToDoEntryPageExtra({
+    required this.collectionId,
+    required this.toDoEntryItemAddedCallBack,
+  });
+}
+
 class CreateToDoEntryPageProvider extends StatelessWidget {
-  const CreateToDoEntryPageProvider({super.key, required this.collectionId});
+  const CreateToDoEntryPageProvider({
+    super.key,
+    required this.collectionId,
+    required this.toDoEntryItemAddedCallBack,
+  });
 
   final CollectionId collectionId;
+  final ToDoEntryItemAddedCallBack toDoEntryItemAddedCallBack;
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +37,18 @@ class CreateToDoEntryPageProvider extends StatelessWidget {
           collectionId: collectionId,
           createToDoEntry: CreateToDoEntry(
               toDoRepository: RepositoryProvider.of<ToDoRepository>(context))),
-      child: const CreateToDoEntryPage(),
+      child: CreateToDoEntryPage(
+          toDoEntryItemAddedCallBack: toDoEntryItemAddedCallBack),
     );
   }
 }
 
 class CreateToDoEntryPage extends StatefulWidget {
-  const CreateToDoEntryPage({super.key});
+  const CreateToDoEntryPage({
+    super.key,
+    required this.toDoEntryItemAddedCallBack,
+  });
+  final ToDoEntryItemAddedCallBack toDoEntryItemAddedCallBack;
 
   static const pageConfig = PageConfig(
     icon: Icons.add_box_rounded,
@@ -79,6 +101,7 @@ class _CreateToDoEntryPageState extends State<CreateToDoEntryPage> {
                   final isValid = _formKey.currentState?.validate();
                   if (isValid == true) {
                     context.read<CreateToDoEntryPageCubit>().submit();
+                    widget.toDoEntryItemAddedCallBack.call();
                     context.pop();
                   }
                 },
