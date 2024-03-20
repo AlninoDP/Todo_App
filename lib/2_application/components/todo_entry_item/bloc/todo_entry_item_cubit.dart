@@ -12,13 +12,13 @@ class ToDoEntryItemCubit extends Cubit<ToDoEntryItemCubitState> {
   final EntryId entryId;
   final CollectionId collectionId;
   final LoadToDoEntry loadToDoEntry;
-  final UpdateToDoEntry uploadToDoEntry;
+  final UpdateToDoEntry updateToDoEntry;
 
   ToDoEntryItemCubit(
       {required this.collectionId,
       required this.entryId,
       required this.loadToDoEntry,
-      required this.uploadToDoEntry})
+      required this.updateToDoEntry})
       : super(ToDoEntryItemLoadingState());
 
   Future<void> fetch() async {
@@ -41,15 +41,14 @@ class ToDoEntryItemCubit extends Cubit<ToDoEntryItemCubitState> {
 
   Future<void> update() async {
     try {
-      final updatedEntry = await uploadToDoEntry.call(
+      final updatedEntry = await updateToDoEntry.call(
         ToDoEntryIdParam(collectionId: collectionId, entryId: entryId),
       );
 
-      return updatedEntry.fold((left) => emit(ToDoEntryItemErrorState()),
-          // (right) => emit(ToDoEntryItemLoadedState(toDoEntry: right)),
-          (right) {
-        emit(ToDoEntryItemLoadedState(toDoEntry: right));
-      });
+      return updatedEntry.fold(
+        (left) => emit(ToDoEntryItemErrorState()),
+        (right) => emit(ToDoEntryItemLoadedState(toDoEntry: right)),
+      );
     } on Exception {
       emit(ToDoEntryItemErrorState());
     }

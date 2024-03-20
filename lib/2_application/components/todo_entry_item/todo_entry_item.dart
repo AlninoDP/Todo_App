@@ -27,7 +27,7 @@ class ToDoEntryItemProvider extends StatelessWidget {
         entryId: entryId,
         loadToDoEntry: LoadToDoEntry(
             toDoRepository: RepositoryProvider.of<ToDoRepository>(context)),
-        uploadToDoEntry: UpdateToDoEntry(
+        updateToDoEntry: UpdateToDoEntry(
           toDoRepository: RepositoryProvider.of<ToDoRepository>(context),
         ),
       )..fetch(),
