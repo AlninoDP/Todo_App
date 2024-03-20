@@ -6,8 +6,6 @@ import 'package:todo_app/1_domain/repositories/todo_repository.dart';
 import 'package:todo_app/1_domain/use_cases/create_todo_collection.dart';
 import 'package:todo_app/2_application/core/page_config.dart';
 import 'package:todo_app/2_application/pages/create_todo_collection/bloc/create_todo_collection_page_cubit.dart';
-import 'package:todo_app/2_application/pages/home/home_page.dart';
-import 'package:todo_app/2_application/pages/overview/overview_page.dart';
 
 class CreateToDoCollectionPageProvider extends StatelessWidget {
   const CreateToDoCollectionPageProvider({super.key});
@@ -86,9 +84,9 @@ class _CreateToDoCollectionPageState extends State<CreateToDoCollectionPage> {
               onPressed: () {
                 final isValid = _formKey.currentState?.validate();
                 if (isValid == true) {
-                  context.read<CreateToDoCollectionPageCubit>().submit();
-                  context.pushReplacementNamed(HomePage.pageConfig.name,
-                      pathParameters: {'tab': OverviewPage.pageConfig.name});
+                  context.read<CreateToDoCollectionPageCubit>().submit().then(
+                        (_) => context.pop(true),
+                      );
                 }
               },
               child: const Text('Save Collection'),
